@@ -1,0 +1,140 @@
+var Cousin;
+var youtuber;
+
+var imageSize = 60;
+var imageArray = [];
+var imageNum = 12;
+var background;
+var Points = 1;
+var subscribe;
+var background;
+var txtPoints;
+var points = 1;
+
+var HLine = new Line(0,0,0,0);
+var VLine = new Line(0,0,0,0);
+
+function start(){
+    drawBackground();
+    drawCousin();
+    drawYouTuber();
+    var title = new Text("My cousins game");
+    title.setPosition(30,30);
+    add(title);
+    mouseClickMethod(checkYoutuber);
+    mouseClickMethod(checkCousin);
+    SubscribeButton();
+    mouseMoveMethod(drawLine);
+    setup();
+}
+function setup(){
+    txtPoints = new Text("Points: "+points, "20pt Sans Serif");
+    txtPoints.setPosition(100,100);
+    txtPoints.setColor(Color.red);
+    add(txtPoints);
+}
+
+function drawBackground(){
+    background = new WebImage("https://codehs.com/uploads/003d92466ce8a63dc846f1af6106a291");
+    background.setSize(getWidth(), getHeight());
+    background.setPosition(0,0);
+    background.setColor(Color.black);
+    add(background);
+}
+
+function drawLine(e){
+    remove(HLine);
+    
+    HLine.setPosition(0, e.getY());
+    HLine.setEndpoint(getWidth(), e.getY());
+   add(HLine);
+   remove(VLine);
+   VLine.setPosition(e.getX(),0);
+   VLine.setEndpoint(e.getX(), getHeight());
+    add(VLine);
+}
+
+function drawYouTuber(){
+    youtuber = new WebImage("https://codehs.com/uploads/7f17f7411218ae29fca1c7292e0c1c88");
+    youtuber.setSize(30,30); 
+    var x1 = Randomizer.nextInt(0,getWidth()-imageSize);
+    var y1 = Randomizer.nextInt(0,getHeight()-imageSize);
+    youtuber.setPosition(x1,y1);
+    imageArray.push(youtuber);
+    add(youtuber);
+}
+function drawCousin(){
+    for (var i =0; i < imageNum; i++){
+    Cousin = new WebImage("https://codehs.com/uploads/00fe7db2c70b8b0a99c1489746e2401e");
+    Cousin.setSize(imageSize, imageSize);
+    var x = Randomizer.nextInt(0,getWidth()-imageSize);
+    var y = Randomizer.nextInt(0,getHeight()-imageSize);
+    Cousin.setPosition(x,y);
+    imageArray.push(Cousin);
+    add(imageArray[i]);
+    }
+}
+function checkCousin(e){
+    var mX = e.getX();
+    var mY = e.getY();
+    var object = getElementAt(e.getX(),e.getY());
+    //println(object);
+    var CousinLBX = Cousin.getX(); //finds the left edge
+    var CousinRBX = Cousin.getX()+Cousin.width; //finds the right edge
+    var CousinTOPY = Cousin.getY(); // finds the top edge
+    var CousinBOTY =  Cousin.getY()+Cousin.height; //finds the bottom edge
+    
+    if ((mX>CousinLBX && mX < CousinRBX) && (mY>CousinTOPY && mY<CousinBOTY) && (object == Cousin)){
+    println("FOUND Cousin");
+    remove(Cousin);
+}else{
+    for(var i = 0; i<imageArray.length; i++){
+    var lbx = imageArray[i].getX();
+    var rbx = imageArray[i].getX()+imageArray[i].width;
+    var topy = imageArray[i].getY();
+    var boty = imageArray[i].getY()+imageArray[i].height;
+    
+    if((mX>lbx && mX<rbx) && (mY>topy && mY<boty)){
+    println("Found Cousin");
+    points++;
+    remove(imageArray[i]);
+     }
+    }
+   }
+}
+
+function checkYoutuber(e){
+    var mX = e.getX();
+    var mY = e.getY();
+    var object = getElementAt(e.getX(),e.getY());
+    //println(object);
+    var youtuberLBX = youtuber.getX(); //finds the left edge
+    var youtuberRBX = youtuber.getX()+youtuber.width; //finds the right edge
+    var youtuberTOPY = youtuber.getY(); // finds the top edge
+    var youtuberBOTY = youtuber.getY()+youtuber.height; //finds the bottom edge
+    
+    if ((mX>youtuberLBX && mX < youtuberRBX) && (mY>youtuberTOPY && mY<youtuberDadBOTY) && (object == youtuber)){
+    println("FOUND youtuber");
+    remove(Cousin);
+}else{
+    for(var i = 0; i<imageArray.length; i++){
+    var lbx = imageArray[i].getX();
+    var rbx = imageArray[i].getX()+imageArray[i].width;
+    var topy = imageArray[i].getY();
+    var boty = imageArray[i].getY()+imageArray[i].height;
+    
+    if((mX>lbx && mX<rbx) && (mY>topy && mY<boty)){
+    println("Nailed it you Found favorite youtuber");
+    points++;
+    remove(youtuber);
+     }
+    }
+   }
+ }
+function SubscribeButton(){
+    subscribe = new WebImage("https://codehs.com/uploads/acac0673dca7c9d62cc417552d04c5b6");
+    subscribe.setPosition(10,10);
+    subscribe.setSize(100,100)
+    subscribe.setColor(Color.black);
+    add(subscribe);
+}
